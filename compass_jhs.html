@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMPASS 中学生版 - 高校受験ロードマップ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #c0392b;
+  --dark-red: #922b21;
+  --deep-red: #7b241c;
+  --light-red: #f1948a;
+  --pale-red: #fdecea;
+  --white: #fff;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-600: #6c757d;
+  --gray-800: #343a40;
+  --blue: #1a6fa8;
+  --green: #1a7a45;
+  --purple: #6c3483;
+  --orange: #b9500a;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* HEADER */
+.app-header {
+  background: linear-gradient(135deg, var(--deep-red), var(--dark-red));
+  color: white;
+  padding: 0 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  position: sticky; top: 0; z-index: 100;
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.header-brand { display: flex; align-items: baseline; gap: 12px; }
+.brand-name { font-size: 22px; font-weight: 800; letter-spacing: 4px; }
+.brand-sub { font-size: 12px; opacity: 0.7; letter-spacing: 1px; }
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* MAIN */
+.main { max-width: 940px; margin: 0 auto; padding: 24px 16px 40px; }
+
+/* CARDS */
+.card { background: white; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.09); margin-bottom: 20px; overflow: hidden; }
+.card-header {
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  color: white; padding: 12px 18px; font-size: 14px; font-weight: 700;
+  letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;
+}
+.card-body { padding: 18px 20px; }
+
+/* FORM */
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 12px; font-weight: 700; color: var(--dark-red); }
+.form-control {
+  padding: 9px 12px; border: 1.5px solid var(--gray-300); border-radius: 7px;
+  font-size: 14px; font-family: inherit; transition: border-color 0.15s, box-shadow 0.15s; background: white;
+}
+.form-control:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(192,57,43,0.12); }
+
+/* GROUP SELECTOR */
+.group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.group-option { position: relative; }
+.group-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.group-option label {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 10px 12px; border: 2px solid var(--gray-300); border-radius: 9px;
+  cursor: pointer; transition: all 0.15s; background: white; text-align: center;
+}
+.group-option label:hover { border-color: var(--light-red); background: var(--pale-red); }
+.group-option input:checked + label { border-color: var(--red); background: var(--pale-red); }
+.group-name { font-size: 16px; font-weight: 800; color: var(--dark-red); }
+.group-desc { font-size: 11px; color: var(--gray-600); margin-top: 3px; line-height: 1.4; }
+
+/* TEXTBOOK SELECTOR */
+.subject-block { margin-bottom: 14px; }
+.subject-label {
+  padding: 9px 14px; font-size: 13px; font-weight: 700; color: white;
+  border-radius: 7px 7px 0 0; display: flex; align-items: center; gap: 6px;
+}
+.subject-label.english  { background: var(--red); }
+.subject-label.math     { background: var(--blue); }
+.subject-label.japanese { background: var(--green); }
+.subject-label.science  { background: var(--purple); }
+.subject-label.social   { background: var(--orange); }
+
+.textbook-rows { border: 1.5px solid var(--gray-200); border-top: none; border-radius: 0 0 7px 7px; overflow: hidden; }
+.textbook-row {
+  display: flex; align-items: center; padding: 7px 12px;
+  border-bottom: 1px solid var(--gray-200); gap: 10px; background: white; transition: background 0.1s;
+}
+.textbook-row:last-child { border-bottom: none; }
+.textbook-row:nth-child(odd) { background: #fafafa; }
+.textbook-row:hover { background: var(--pale-red); }
+.textbook-row.recommended { background: #fff8e1; }
+.textbook-row.recommended:hover { background: #fff3cd; }
+
+.textbook-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--red); cursor: pointer; flex-shrink: 0; }
+.tb-cat {
+  font-size: 10px; font-weight: 700; color: white;
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap; min-width: 56px; text-align: center; flex-shrink: 0;
+}
+.tb-cat.english  { background: var(--red); }
+.tb-cat.math     { background: var(--blue); }
+.tb-cat.japanese { background: var(--green); }
+.tb-cat.science  { background: var(--purple); }
+.tb-cat.social   { background: var(--orange); }
+
+/* === タイプバッジ（メイン/サブ） === */
+.tb-type-badge {
+  font-size: 10px; font-weight: 700; color: white;
+  padding: 2px 8px; border-radius: 3px; white-space: nowrap;
+  min-width: 42px; text-align: center; flex-shrink: 0; letter-spacing: 1px;
+}
+.tb-type-badge.main { background: var(--deep-red); }
+.tb-type-badge.sub  { background: var(--gray-600); }
+.tb-type-badge.sub2 { background: var(--blue); }
+
+/* === 科目＋タイプ見出し === */
+.type-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; margin-top: 10px;
+  background: var(--gray-100); border-left: 4px solid var(--gray-400);
+  border-radius: 3px; font-size: 12px; font-weight: 700;
+}
+.type-header:first-child { margin-top: 0; }
+.type-header.main { border-left-color: var(--red); background: #fef5f4; }
+.type-header.sub  { border-left-color: var(--gray-600); }
+.type-header.sub2 { border-left-color: var(--blue); background: #eef4fb; }
+.type-header .type-label { color: var(--gray-800); }
+.type-header .subj-label {
+  padding: 1px 6px; border-radius: 3px; color: white; font-size: 11px;
+}
+
+.tb-name { flex: 1; font-size: 13px; cursor: pointer; }
+.tb-short { color: var(--gray-600); font-size: 11px; flex-shrink: 0; }
+.tb-dur { font-size: 11px; color: var(--gray-400); white-space: nowrap; flex-shrink: 0; }
+
+/* グループバッジ */
+.tb-groups { display: flex; gap: 2px; flex-shrink: 0; }
+.tb-group-badge {
+  font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 3px;
+  color: white; opacity: 0.9;
+}
+.tb-group-badge.active { opacity: 1; }
+.tb-group-badge.inactive { opacity: 0.25; }
+
+/* BUTTONS */
+.btn {
+  padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  color: white; box-shadow: 0 2px 8px rgba(192,57,43,0.3);
+}
+.btn-primary:hover { background: linear-gradient(135deg, var(--dark-red), var(--deep-red)); transform: translateY(-1px); }
+.btn-secondary { background: white; color: var(--dark-red); border: 2px solid var(--red); }
+.btn-secondary:hover { background: var(--pale-red); }
+.btn-ghost { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.45); padding: 7px 14px; font-size: 13px; }
+.btn-ghost:hover { background: rgba(255,255,255,0.15); }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+.action-bar { display: flex; justify-content: center; gap: 14px; padding: 14px 0 4px; }
+
+/* COMPRESSION NOTICE */
+.compress-notice {
+  background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
+  padding: 10px 14px; font-size: 12px; color: #7a5c00; margin-bottom: 14px; display: none;
+}
+.compress-notice.visible { display: block; }
+.compress-notice strong { color: #5c4000; }
+
+/* ROADMAP SCREEN */
+#screen-roadmap { background: var(--gray-100); min-height: 100vh; }
+.roadmap-top {
+  background: linear-gradient(135deg, var(--deep-red), var(--dark-red));
+  color: white; padding: 18px 28px 16px;
+}
+.roadmap-brand { font-size: 11px; letter-spacing: 3px; opacity: 0.65; margin-bottom: 4px; font-weight: 600; }
+.roadmap-student-name { font-size: 26px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; }
+.roadmap-meta { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; opacity: 0.85; }
+
+.roadmap-body { padding: 20px 16px 32px; max-width: 1200px; margin: 0 auto; overflow-x: auto; }
+.roadmap-table-wrap { background: white; border-radius: 10px; box-shadow: 0 1px 8px rgba(0,0,0,0.1); overflow: hidden; }
+
+.roadmap-table { width: 100%; border-collapse: collapse; min-width: 680px; }
+.roadmap-table thead th {
+  background: var(--dark-red); color: white; font-size: 11px; font-weight: 700;
+  padding: 7px 3px; text-align: center; border: 1px solid rgba(255,255,255,0.15);
+}
+.roadmap-table thead th.month-exam { background: var(--deep-red); }
+.roadmap-table thead th.month-exam::after { content: '★'; font-size: 8px; display: block; opacity: 0.8; }
+.roadmap-table thead th.col-subject { width: 26px; }
+.roadmap-table thead th.col-cat { min-width: 80px; }
+.roadmap-table thead th.col-month { min-width: 52px; }
+
+.subject-cell {
+  color: white; text-align: center; vertical-align: middle;
+  font-size: 12px; font-weight: 800; writing-mode: vertical-rl;
+  letter-spacing: 2px; padding: 8px 4px; width: 26px;
+}
+.cat-cell {
+  padding: 6px 10px; font-size: 11px; font-weight: 600; white-space: nowrap;
+  color: var(--gray-800); background: #fafafa; border: 1px solid var(--gray-200); vertical-align: middle;
+}
+.month-cell {
+  border: 1px solid var(--gray-200); padding: 3px 2px;
+  text-align: center; height: 40px; vertical-align: middle;
+}
+.month-cell.before-enroll { background: #f5f5f5; }
+.month-cell.exam-month { background: #fff8f7; }
+
+.tb-span {
+  display: block; color: white; font-size: 10px; font-weight: 700;
+  padding: 4px 3px; border-radius: 4px; line-height: 1.3;
+  text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tb-span.compressed { opacity: 0.85; }
+
+/* 圧縮インジケーター */
+.compress-info {
+  margin-top: 10px; padding: 8px 12px; background: #fff8e1;
+  border-left: 3px solid #ffc107; border-radius: 0 6px 6px 0;
+  font-size: 11px; color: #7a5c00; display: none;
+}
+.compress-info.visible { display: block; }
+
+.exam-note { margin-top: 10px; font-size: 11px; color: var(--gray-600); text-align: right; padding-right: 4px; }
+
+/* SETTINGS MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 200;
+  align-items: flex-start; justify-content: center;
+  padding: 24px 16px; overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 12px; width: 100%; max-width: 880px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.3); margin: auto;
+}
+.modal-header {
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  color: white; padding: 16px 20px; font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  border-radius: 12px 12px 0 0;
+}
+.modal-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; opacity: 0.8; }
+.modal-close:hover { opacity: 1; }
+.modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
+.modal-footer { padding: 14px 20px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 10px; }
+
+.settings-tabs { display: flex; border-bottom: 2px solid var(--gray-200); margin-bottom: 16px; }
+.stab {
+  padding: 9px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: none; border-bottom: 2px solid transparent; margin-bottom: -2px;
+  color: var(--gray-600); background: none; font-family: inherit; transition: all 0.15s;
+}
+.stab.active { color: var(--red); border-bottom-color: var(--red); }
+.stab-content { display: none; }
+.stab-content.active { display: block; }
+
+.stg-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.stg-table th {
+  background: var(--gray-100); padding: 7px 8px; text-align: left;
+  font-weight: 600; border: 1px solid var(--gray-200); font-size: 11px;
+}
+.stg-table td { padding: 4px 6px; border: 1px solid var(--gray-200); vertical-align: middle; }
+.stg-table input, .stg-table select {
+  width: 100%; padding: 4px 6px; border: 1px solid var(--gray-300);
+  border-radius: 4px; font-size: 11px; font-family: inherit;
+}
+.stg-table input:focus, .stg-table select:focus { outline: none; border-color: var(--red); }
+
+/* グループチェックボックス（設定テーブル内） */
+.group-checks { display: flex; gap: 4px; flex-wrap: nowrap; }
+.group-check { display: flex; align-items: center; gap: 2px; font-size: 10px; cursor: pointer; white-space: nowrap; }
+.group-check input { width: 13px; height: 13px; accent-color: var(--red); }
+
+.btn-del { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 14px; padding: 2px 5px; border-radius: 4px; transition: all 0.1s; }
+.btn-del:hover { background: #fee; color: var(--red); }
+.btn-add-row { margin-top: 10px; background: none; border: 1.5px dashed var(--gray-400); color: var(--gray-600); padding: 7px 14px; border-radius: 7px; cursor: pointer; font-size: 12px; font-family: inherit; width: 100%; transition: all 0.15s; }
+.btn-add-row:hover { border-color: var(--red); color: var(--red); }
+.hint-text { font-size: 11px; color: var(--gray-600); margin-bottom: 12px; line-height: 1.6; }
+
+/* PRINT */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #screen-input { display: none !important; }
+  #screen-roadmap { display: block !important; background: white; }
+  .app-header { display: none; }
+
+  /* A3横向き：余白を最小化してシート全体を収める */
+  @page { size: A3 landscape; margin: 6mm 8mm; }
+
+  /* ロードマップ全体のレイアウト調整 */
+  .roadmap-top {
+    background: var(--dark-red) !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    padding: 8px 16px;
+  }
+  .roadmap-student-name { font-size: 18px !important; margin-bottom: 3px; }
+  .roadmap-meta { font-size: 11px !important; gap: 10px; }
+
+  .roadmap-body {
+    padding: 6px 8px;
+    max-width: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .roadmap-table-wrap {
+    box-shadow: none;
+    border: 1px solid var(--gray-300);
+    border-radius: 0 !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .roadmap-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+    font-size: 10px;
+  }
+  .roadmap-table thead th {
+    font-size: 10px;
+    padding: 5px 2px;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .roadmap-table thead th.col-subject { width: 20px !important; }
+  .roadmap-table thead th.col-cat { min-width: 0 !important; width: 60px !important; }
+  .roadmap-table thead th.col-month { min-width: 0 !important; }
+  .subject-cell {
+    font-size: 9px !important;
+    width: 20px !important;
+    max-width: 20px !important;
+    padding: 4px 2px !important;
+    letter-spacing: 1px !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .cat-cell {
+    font-size: 9px !important;
+    padding: 2px 4px !important;
+    width: 58px !important;
+    max-width: 58px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .month-cell { padding: 3px 2px !important; }
+  .tb-span {
+    font-size: 9px !important;
+    padding: 2px 4px !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+
+  .btn-roadmap-actions, .compress-info { display: none !important; }
+}
+
+/* === COVER THUMBNAILS (テキスト選択画面) === */
+.textbook-row { gap: 8px; }
+.tb-cover {
+  width: 32px; height: 45px; object-fit: cover; border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.22); flex-shrink: 0;
+  display: block;
+}
+.tb-cover-placeholder {
+  width: 32px; height: 45px; flex-shrink: 0;
+  background: var(--gray-200); border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--gray-400);
+}
+
+/* === 設定テーブル内 カバープレビュー & フェッチボタン === */
+.cover-preview {
+  width: 36px; min-height: 22px; display: flex; align-items: center; justify-content: center;
+}
+.fetch-btn {
+  background: var(--gray-100); border: 1px solid var(--gray-300);
+  border-radius: 4px; padding: 2px 6px; cursor: pointer;
+  font-size: 11px; transition: all 0.15s; white-space: nowrap; font-family: inherit;
+}
+.fetch-btn:hover { background: var(--pale-red); border-color: var(--red); }
+.fetch-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-fetch-all {
+  margin-top: 8px; background: var(--pale-red); border: 1.5px solid var(--light-red);
+  color: var(--dark-red); padding: 7px 14px; border-radius: 7px; cursor: pointer;
+  font-size: 12px; font-family: inherit; font-weight: 600; width: 100%; transition: all 0.15s;
+}
+.btn-fetch-all:hover { background: #fad7d3; }
+.btn-fetch-all:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* === BOOK GALLERY（ロードマップ画面） === */
+.book-gallery-section {
+  background: white; border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.09);
+  margin-bottom: 16px; overflow: hidden;
+}
+.book-gallery-header {
+  background: linear-gradient(135deg, var(--red), var(--dark-red));
+  color: white; padding: 10px 18px; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.book-gallery {
+  display: flex; flex-wrap: wrap; gap: 14px; padding: 16px 20px;
+}
+.book-card {
+  display: flex; flex-direction: column; align-items: center;
+  width: 72px; gap: 6px;
+}
+.book-card-img {
+  width: 58px; height: 82px; object-fit: cover;
+  border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+}
+.book-card-placeholder {
+  width: 58px; height: 82px; background: var(--gray-200);
+  border-radius: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: var(--gray-400);
+}
+.book-card-label {
+  font-size: 9px; color: var(--gray-600); text-align: center;
+  line-height: 1.3; word-break: break-all; max-width: 72px;
+}
+.book-card-subj {
+  font-size: 8px; font-weight: 700; text-align: center;
+  padding: 1px 4px; border-radius: 3px; color: white; margin-top: 1px;
+}
+
+@media print {
+  .book-gallery-section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header no-print">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="brand-name">COMPASS</span>
+      <span class="brand-sub">高校受験ロードマップ｜中学生版</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="openSettings()">⚙ 設定</button>
+    </div>
+  </div>
+</header>
+
+
+<!-- SCREEN 1: INPUT -->
+<div id="screen-input" class="screen active">
+  <div class="main">
+
+    <div class="card">
+      <div class="card-header">👤 生徒情報入力</div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">氏名</label>
+            <input type="text" id="studentName" class="form-control" placeholder="例：山田　太郎">
+          </div>
+          <div class="form-group">
+            <label class="form-label">在籍中学校名</label>
+            <input type="text" id="schoolName" class="form-control" placeholder="例：〇〇中学校">
+          </div>
+          <div class="form-group">
+            <label class="form-label">入塾月</label>
+            <select id="enrollMonth" class="form-control" onchange="onEnrollMonthChange()">
+              <option value="3">3月</option><option value="4">4月</option>
+              <option value="5">5月</option><option value="6">6月</option>
+              <option value="7">7月</option><option value="8">8月</option>
+              <option value="9">9月</option><option value="10">10月</option>
+              <option value="11">11月</option><option value="12">12月</option>
+              <option value="1">1月</option><option value="2">2月</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 圧縮警告 -->
+        <div id="compress-notice" class="compress-notice" style="margin-top:12px;">
+          ⚠️ <strong>入塾月が遅いため、テキストの学習期間を自動圧縮します。</strong>
+          <span id="compress-notice-detail"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">🎯 志望校グループ</div>
+      <div class="card-body">
+        <p style="font-size:12px;color:var(--gray-600);margin-bottom:12px;">グループを選ぶと、対応するテキストが自動でチェックされます。</p>
+        <div id="group-grid" class="group-grid"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">📚 使用テキスト選択</div>
+      <div class="card-body">
+        <p style="font-size:12px;color:var(--gray-600);margin-bottom:14px;">グループ選択後に自動でチェックされます。個別に追加・外しも可能です。<span id="compress-inline" style="color:#b8860b;font-weight:600;"></span></p>
+        <div id="textbook-selector"></div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" onclick="generateRoadmap()">📋 ロードマップを生成する</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCREEN 2: ROADMAP -->
+<div id="screen-roadmap" class="screen">
+  <div class="roadmap-top">
+    <div class="roadmap-brand">COMPASS — 高校受験ロードマップ</div>
+    <div class="roadmap-student-name" id="rm-name"></div>
+    <div class="roadmap-meta">
+      <span id="rm-school"></span>
+      <span id="rm-group"></span>
+      <span id="rm-enroll"></span>
+    </div>
+  </div>
+  <div class="roadmap-body">
+    <div class="roadmap-table-wrap">
+      <table class="roadmap-table" id="roadmap-table"></table>
+    </div>
+    <div id="rm-compress-info" class="compress-info"></div>
+    <div class="exam-note">★ = 受験シーズン（1月〜2月）</div>
+    <!-- 使用テキスト一覧（表紙ギャラリー） -->
+    <div class="book-gallery-section" id="book-gallery-section" style="margin-top:16px;">
+      <div class="book-gallery-header">📚 使用テキスト一覧</div>
+      <div class="book-gallery" id="book-gallery"></div>
+    </div>
+    <div class="action-bar btn-roadmap-actions no-print" style="margin-top:20px;">
+      <button class="btn btn-secondary" onclick="showInput()">← 入力画面に戻る</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨 PDF保存 / 印刷</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SETTINGS MODAL -->
+<div id="modal-settings" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      ⚙ 設定
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-tabs">
+        <button class="stab active" onclick="switchStab('groups',this)">偏差値グループ</button>
+        <button class="stab" onclick="switchStab('textbooks',this)">テキストマスター</button>
+      </div>
+
+      <div id="stab-groups" class="stab-content active">
+        <p class="hint-text">志望校の偏差値グループを定義します。入力画面でグループを選ぶと、対応するテキストが自動でチェックされます。</p>
+        <table class="stg-table">
+          <thead><tr>
+            <th style="width:20%">グループ名</th>
+            <th>説明（偏差値の目安など）</th>
+            <th style="width:36px"></th>
+          </tr></thead>
+          <tbody id="groups-tbody"></tbody>
+        </table>
+        <button class="btn-add-row" onclick="addGroupRow()">＋ グループを追加</button>
+      </div>
+
+      <div id="stab-textbooks" class="stab-content">
+        <p class="hint-text">
+          テキストマスターです。「対象グループ」でチェックしたグループ選択時に自動でチェックされます。
+          「標準期間」は3月入塾の場合の期間、「最短期間」は入塾が遅い場合の最低保証期間です。
+        </p>
+        <table class="stg-table">
+          <thead><tr>
+            <th style="width:9%">科目</th>
+            <th style="width:10%">タイプ</th>
+            <th style="width:48px">順序</th>
+            <th>テキスト名</th>
+            <th style="width:11%">略称</th>
+            <th style="width:48px">標準(月)</th>
+            <th style="width:48px">最短(月)</th>
+            <th style="min-width:170px">対象グループ</th>
+            <th style="width:120px">ISBN / 表紙</th>
+            <th style="width:32px"></th>
+          </tr></thead>
+          <tbody id="textbooks-tbody"></tbody>
+        </table>
+        <button class="btn-add-row" onclick="addTextbookRow()">＋ テキストを追加</button>
+        <button class="btn-fetch-all" id="btn-fetch-all" onclick="fetchAllCovers()">🖼 全テキストの表紙を一括取得（Google Books）</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary btn-sm" onclick="closeSettings()">キャンセル</button>
+      <button class="btn btn-primary btn-sm" onclick="saveSettings()">✓ 保存して閉じる</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ========================
+// CONSTANTS
+// ========================
+const SUBJECTS  = ["英語","数学","国語","理科","社会"];
+const SUBJ_KEY  = {"英語":"english","数学":"math","国語":"japanese","理科":"science","社会":"social"};
+const MONTHS    = [3,4,5,6,7,8,9,10,11,12,1,2];
+const MONTH_LBL = ["3月","4月","5月","6月","7月","8月","9月","10月","11月","12月","1月","2月"];
+const EXAM_IDX  = [10,11]; // 1月,2月
+
+const SUBJ_COLOR = {
+  "英語":"#c0392b","数学":"#1a6fa8","国語":"#1a7a45","理科":"#6c3483","社会":"#b9500a"
+};
+
+// ========================
+// DEFAULT DATA
+// ========================
+let groups = [
+  { id:1, name:"難関",   desc:"偏差値65以上" },
+  { id:2, name:"上位",   desc:"偏差値55〜64" },
+  { id:3, name:"中堅",   desc:"偏差値45〜54" },
+  { id:4, name:"その他", desc:"偏差値45未満" },
+];
+
+// groups: 対象グループIDの配列。例 [1,2] = 難関・上位のみ、[1,2,3,4] = 全グループ
+// minDuration: 最短学習期間（入塾が遅い場合の下限）
+let textbooks = [
+  // 英語
+  { id: 1,  subject:"英語", type:"main", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, groups:[1,2,3,4] },
+  { id: 3,  subject:"英語", type:"main", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, groups:[1,2,3,4] },
+  { id: 5,  subject:"英語", type:"main", name:"英語長文問題の完全制覇",       shortName:"長文完全",   isbn:"", duration:3, minDuration:2, order:3, groups:[1,2,3] },
+  { id: 2,  subject:"英語", type:"sub",  name:"でる順パス単 中学英単語",      shortName:"パス単",     isbn:"9784010944592", duration:4, minDuration:2, order:1, groups:[1,2,3] },
+  { id: 4,  subject:"英語", type:"sub",  name:"高校入試 英語長文・文法攻略",  shortName:"文法攻略",   isbn:"", duration:3, minDuration:2, order:2, groups:[1,2] },
+  { id: 6,  subject:"英語", type:"sub",  name:"全国高校入試問題正解 英語",    shortName:"全国入試英", isbn:"", duration:2, minDuration:1, order:3, groups:[1,2,3,4] },
+  // 英語 サブ2
+  { id:23,  subject:"英語", type:"sub2", name:"英語リスニング完全攻略",          shortName:"リスニング",  isbn:"", duration:2, minDuration:1, order:1, groups:[1,2,3,4] },
+  { id:24,  subject:"英語", type:"sub2", name:"英作文・自由英作文対策",           shortName:"英作文",      isbn:"", duration:2, minDuration:1, order:2, groups:[1,2] },
+  // 数学
+  { id: 7,  subject:"数学", type:"main", name:"チャート式 中学数学",          shortName:"チャート数", isbn:"", duration:5, minDuration:3, order:1, groups:[1,2,3,4] },
+  { id: 9,  subject:"数学", type:"main", name:"中学数学 図形・関数の攻略",     shortName:"図形関数",   isbn:"", duration:3, minDuration:2, order:2, groups:[1,2,3,4] },
+  { id:10,  subject:"数学", type:"main", name:"実戦問題演習 公立入試数学",     shortName:"公立演習数", isbn:"", duration:2, minDuration:1, order:3, groups:[1,2,3,4] },
+  { id: 8,  subject:"数学", type:"sub",  name:"数学標準問題集（計算・方程式）", shortName:"数学標準",   isbn:"", duration:3, minDuration:2, order:1, groups:[1,2,3] },
+  { id:11,  subject:"数学", type:"sub",  name:"全国高校入試問題正解 数学",     shortName:"全国入試数", isbn:"", duration:2, minDuration:1, order:2, groups:[1,2] },
+  // 国語
+  { id:12,  subject:"国語", type:"main", name:"中学漢字スタートアップ",        shortName:"漢字SU",     isbn:"", duration:3, minDuration:2, order:1, groups:[1,2,3,4] },
+  { id:13,  subject:"国語", type:"main", name:"中学国語読解問題の攻略",        shortName:"国語読解",   isbn:"", duration:4, minDuration:2, order:2, groups:[1,2,3,4] },
+  { id:15,  subject:"国語", type:"sub",  name:"中学古文・漢文 完全攻略",       shortName:"古文漢文",   isbn:"", duration:3, minDuration:2, order:1, groups:[1,2,3] },
+  { id:14,  subject:"国語", type:"sub",  name:"全国高校入試問題正解 国語",     shortName:"全国入試国", isbn:"", duration:2, minDuration:1, order:2, groups:[1,2,3,4] },
+  // 理科
+  { id:16,  subject:"理科", type:"main", name:"中学理科完全攻略（物理・化学）", shortName:"理科物化",   isbn:"", duration:4, minDuration:2, order:1, groups:[1,2,3,4] },
+  { id:17,  subject:"理科", type:"main", name:"中学理科完全攻略（生物・地学）", shortName:"理科生地",   isbn:"", duration:4, minDuration:2, order:2, groups:[1,2,3,4] },
+  { id:18,  subject:"理科", type:"sub",  name:"全国高校入試問題正解 理科",     shortName:"全国入試理", isbn:"", duration:2, minDuration:1, order:1, groups:[1,2,3,4] },
+  // 社会
+  { id:19,  subject:"社会", type:"main", name:"中学地理が面白いほどわかる本",  shortName:"地理",       isbn:"", duration:3, minDuration:2, order:1, groups:[1,2,3,4] },
+  { id:20,  subject:"社会", type:"main", name:"中学歴史が面白いほどわかる本",  shortName:"歴史",       isbn:"", duration:3, minDuration:2, order:2, groups:[1,2,3,4] },
+  { id:21,  subject:"社会", type:"main", name:"中学公民が面白いほどわかる本",  shortName:"公民",       isbn:"", duration:2, minDuration:1, order:3, groups:[1,2,3,4] },
+  { id:22,  subject:"社会", type:"sub",  name:"全国高校入試問題正解 社会",     shortName:"全国入試社", isbn:"", duration:2, minDuration:1, order:1, groups:[1,2,3,4] },
+];
+
+
+// ========================
+// COVER CACHE (localStorage)
+// ========================
+let coverCache = {};
+
+function loadCovers() {
+  try {
+    const saved = localStorage.getItem('compass_covers');
+    if (saved) coverCache = JSON.parse(saved);
+  } catch(e) { coverCache = {}; }
+}
+
+function saveCovers() {
+  try {
+    localStorage.setItem('compass_covers', JSON.stringify(coverCache));
+  } catch(e) {}
+}
+
+function getCoverUrl(tb) {
+  return coverCache[tb.name] || '';
+}
+
+async function fetchCoverByQuery(query) {
+  try {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.items && data.items[0]) {
+      const links = data.items[0].volumeInfo.imageLinks;
+      if (links) {
+        return (links.thumbnail || links.smallThumbnail || '').replace('http://', 'https://');
+      }
+    }
+  } catch(e) {}
+  return '';
+}
+
+async function fetchCoverForRow(btn) {
+  const tr      = btn.closest('tr');
+  const nameEl  = tr.querySelector('[data-f="name"]');
+  const isbnEl  = tr.querySelector('[data-f="isbn"]');
+  const preview = tr.querySelector('.cover-preview');
+  const name    = nameEl ? nameEl.value.trim() : '';
+  const isbn    = isbnEl ? isbnEl.value.trim() : '';
+
+  if (!name && !isbn) { alert('テキスト名またはISBNを入力してください。'); return; }
+
+  const origText = btn.textContent;
+  btn.textContent = '…';
+  btn.disabled    = true;
+
+  let coverUrl = '';
+  if (isbn) {
+    coverUrl = await fetchCoverByQuery('isbn:' + isbn);
+  }
+  if (!coverUrl && name) {
+    coverUrl = await fetchCoverByQuery(name + ' 中学');
+  }
+
+  btn.textContent = origText;
+  btn.disabled    = false;
+
+  if (coverUrl && name) {
+    coverCache[name] = coverUrl;
+    saveCovers();
+    if (preview) {
+      preview.innerHTML = `<img src="${coverUrl}" style="height:48px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">`;
+    }
+    renderTextbookSelector();
+  } else {
+    alert('表紙画像が見つかりませんでした。\nISBNを入力すると精度が上がります。');
+  }
+}
+
+async function fetchAllCovers() {
+  const btn = document.getElementById('btn-fetch-all');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 取得中…'; }
+  let count = 0;
+  for (const tb of textbooks) {
+    if (!getCoverUrl(tb)) {
+      const query  = tb.isbn ? 'isbn:' + tb.isbn : tb.name + ' 中学';
+      const url    = await fetchCoverByQuery(query);
+      if (url) { coverCache[tb.name] = url; count++; }
+      await new Promise(r => setTimeout(r, 300)); // rate limit
+    }
+  }
+  saveCovers();
+  if (btn) { btn.disabled = false; btn.textContent = '🖼 全テキストの表紙を一括取得（Google Books）'; }
+  renderTextbooksTable();
+  renderTextbookSelector();
+  alert(`${count}件の表紙画像を取得しました！\n\n取得できなかった場合は、設定のISBN欄に書籍のISBN（13桁）を入力して「🔍取得」を押すと精度が上がります。`);
+}
+
+// ========================
+// BOOK GALLERY（ロードマップ画面）
+// ========================
+function renderBookGallery(selected) {
+  const gallery = document.getElementById('book-gallery');
+  if (!gallery) return;
+  const SUBJ_COLOR_MAP = {
+    '英語':'#1a6fa8','数学':'#c0392b','国語':'#1a7a45',
+    '理科':'#6c3483','社会':'#b9500a'
+  };
+  gallery.innerHTML = selected.map(tb => {
+    const url   = getCoverUrl(tb);
+    const color = SUBJ_COLOR_MAP[tb.subject] || '#555';
+    const img   = url
+      ? `<img class="book-card-img" src="${url}" alt="${escAttr(tb.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="book-card-placeholder" style="display:none">📖</div>`
+      : `<div class="book-card-placeholder">📖</div>`;
+    return `<div class="book-card">
+      ${img}
+      <div class="book-card-label">${escHtml(tb.shortName)}</div>
+      <div class="book-card-subj" style="background:${color}">${escHtml(tb.subject)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ========================
+// INIT
+// ========================
+function init() {
+  loadCovers();
+  renderGroupSelector();
+  renderTextbookSelector();
+  onEnrollMonthChange();
+}
+
+// ========================
+// 入塾月変更
+// ========================
+function onEnrollMonthChange() {
+  const month = parseInt(document.getElementById('enrollMonth').value);
+  const startIdx = MONTHS.indexOf(month);
+  const available = 12 - startIdx;
+  const notice = document.getElementById('compress-notice');
+  const detail = document.getElementById('compress-notice-detail');
+  const inline = document.getElementById('compress-inline');
+
+  if (startIdx > 0) {
+    const ratio = available / 12;
+    notice.classList.add('visible');
+    detail.textContent = `残り${available}ヶ月（圧縮率 約${Math.round(ratio*100)}%）`;
+    inline.textContent = ` ※入塾月により学習期間を自動圧縮しています（${available}ヶ月ベース）`;
+  } else {
+    notice.classList.remove('visible');
+    inline.textContent = '';
+  }
+}
+
+// ========================
+// 圧縮計算
+// ========================
+function calcCompressedDuration(standardDuration, minDuration, compressionRatio) {
+  if (compressionRatio >= 1) return standardDuration;
+  return Math.max(minDuration, Math.round(standardDuration * compressionRatio));
+}
+
+// ========================
+// GROUP SELECTOR
+// ========================
+function renderGroupSelector() {
+  const el = document.getElementById('group-grid');
+  if (!groups.length) {
+    el.innerHTML = '<p style="color:#888;font-size:13px;">設定からグループを追加してください。</p>';
+    return;
+  }
+  el.innerHTML = groups.map(g => `
+    <div class="group-option">
+      <input type="radio" name="targetGroup" id="g${g.id}" value="${g.id}" onchange="onGroupChange(${g.id})">
+      <label for="g${g.id}">
+        <span class="group-name">${escHtml(g.name)}</span>
+        <span class="group-desc">${escHtml(g.desc||'　')}</span>
+      </label>
+    </div>
+  `).join('');
+}
+
+// グループ選択時: 対象テキストを自動チェック
+function onGroupChange(groupId) {
+  // いったん全チェック外す
+  document.querySelectorAll('#textbook-selector input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.textbook-row').classList.remove('recommended');
+  });
+  // 対象グループのテキストをチェック
+  for (const tb of textbooks) {
+    if (tb.groups.includes(groupId)) {
+      const cb = document.getElementById('tb' + tb.id);
+      if (cb) {
+        cb.checked = true;
+        cb.closest('.textbook-row').classList.add('recommended');
+      }
+    }
+  }
+  updateGroupBadges(groupId);
+}
+
+function updateGroupBadges(selectedGroupId) {
+  document.querySelectorAll('.tb-group-badge').forEach(badge => {
+    const gid = parseInt(badge.dataset.gid);
+    badge.classList.toggle('active',   gid === selectedGroupId);
+    badge.classList.toggle('inactive', gid !== selectedGroupId);
+  });
+}
+
+// ========================
+// TEXTBOOK SELECTOR
+// ========================
+function renderTextbookSelector() {
+  const container = document.getElementById('textbook-selector');
+  // 科目 → タイプ(main/sub) の二段グループ化
+  const byKey = {};
+  for (const tb of textbooks) {
+    const k = tb.subject + '|' + tb.type;
+    (byKey[k] = byKey[k] || []).push(tb);
+  }
+  // order順でソート
+  Object.values(byKey).forEach(arr => arr.sort((a,b) => (a.order||99) - (b.order||99)));
+
+  const TYPES = [
+    { key:'main', label:'メイン' },
+    { key:'sub',  label:'サブ' },
+    { key:'sub2', label:'サブ2' },
+  ];
+
+  container.innerHTML = SUBJECTS.map(subj => {
+    const key = SUBJ_KEY[subj];
+    const blocks = TYPES.map(t => {
+      const list = byKey[subj + '|' + t.key];
+      if (!list || !list.length) return '';
+      return `
+        <div class="type-header ${t.key}">
+          <span class="subj-label" style="background:${SUBJ_COLOR[subj]};">${escHtml(subj)}</span>
+          <span class="type-label">（${t.label}）</span>
+        </div>
+        <div class="textbook-rows">
+          ${list.map(tb => `
+            <div class="textbook-row" id="row-tb${tb.id}">
+              <input type="checkbox" id="tb${tb.id}" value="${tb.id}">
+              ${getCoverUrl(tb)
+                ? `<img class="tb-cover" src="${getCoverUrl(tb)}" alt="${escAttr(tb.name)}" onerror="this.classList.add('hidden')">`
+                : `<div class="tb-cover-placeholder">📖</div>`}
+              <span class="tb-type-badge ${t.key}">${t.label}</span>
+              <label for="tb${tb.id}" class="tb-name">${escHtml(tb.name)}</label>
+              <span class="tb-short">（${escHtml(tb.shortName)}）</span>
+              <div class="tb-groups">${renderGroupBadges(tb.groups)}</div>
+              <span class="tb-dur">${tb.duration}ヶ月</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }).join('');
+    return blocks ? `<div class="subject-block">${blocks}</div>` : '';
+  }).join('');
+}
+
+function renderGroupBadges(tbGroups) {
+  return groups.map(g => {
+    const has = tbGroups.includes(g.id);
+    return `<span class="tb-group-badge ${has?'active':'inactive'}" data-gid="${g.id}"
+      style="background:${groupColor(g.id)};">${escHtml(g.name.slice(0,1))}</span>`;
+  }).join('');
+}
+
+function groupColor(id) {
+  const colors = ['#c0392b','#1a6fa8','#1a7a45','#6c3483','#b9500a'];
+  return colors[(id-1) % colors.length];
+}
+
+// ========================
+// ROADMAP GENERATION
+// ========================
+function generateRoadmap() {
+  const name   = document.getElementById('studentName').value.trim();
+  const school = document.getElementById('schoolName').value.trim();
+  const month  = parseInt(document.getElementById('enrollMonth').value);
+  const gEl    = document.querySelector('input[name="targetGroup"]:checked');
+
+  if (!name) { alert('氏名を入力してください。'); return; }
+
+  const group    = gEl ? groups.find(g => g.id === parseInt(gEl.value)) : null;
+  const selIds   = Array.from(document.querySelectorAll('#textbook-selector input[type="checkbox"]:checked'))
+                     .map(el => parseInt(el.value));
+  const selected = textbooks.filter(tb => selIds.includes(tb.id));
+
+  if (!selected.length) { alert('テキストを1つ以上選択してください。'); return; }
+
+  // 圧縮率計算
+  const startIdx         = MONTHS.indexOf(month);
+  const availableMonths  = Math.max(0, 10 - startIdx);
+  const compressionRatio = availableMonths / 12;
+
+  // 科目×タイプ（メイン/サブ）別に圧縮を適用してplacements計算
+  const typeMap = {};
+  for (const tb of selected) {
+    const key = tb.subject + '|||' + tb.type;
+    (typeMap[key] = typeMap[key] || { subject:tb.subject, type:tb.type, items:[] }).items.push(tb);
+  }
+  // 各グループ内で order 順にソート
+  Object.values(typeMap).forEach(g => g.items.sort((a,b) => (a.order||99) - (b.order||99)));
+
+  const placements = [];
+  const compressedRows = []; // 圧縮が発生した行を記録
+
+  for (const cg of Object.values(typeMap)) {
+    // このタイプ行の標準合計期間
+    const totalStandard = cg.items.reduce((s, tb) => s + tb.duration, 0);
+    const catRatio = Math.min(1, availableMonths / totalStandard);
+    const isCompressed = catRatio < 1;
+
+    if (isCompressed) compressedRows.push({ subject: cg.subject, type: cg.type, ratio: catRatio });
+
+    let cur = startIdx;
+    for (const tb of cg.items) {
+      if (cur > 11) break;
+      const actualDur = calcCompressedDuration(tb.duration, tb.minDuration, catRatio);
+      const end       = Math.min(cur + actualDur - 1, 8);
+      placements.push({ tb, si: cur, ei: end, compressed: isCompressed, originalDur: tb.duration, actualDur });
+      cur = end + 1;
+    }
+  }
+
+  // ヘッダー
+  document.getElementById('rm-name').textContent   = name + ' 様';
+  document.getElementById('rm-school').textContent  = school ? '🏫 '+school : '';
+  document.getElementById('rm-group').textContent   = group  ? '🎯 志望：'+group.name+'クラス' : '';
+  document.getElementById('rm-enroll').textContent  = '📅 入塾：中3 '+month+'月〜';
+
+  // 圧縮情報
+  const infoEl = document.getElementById('rm-compress-info');
+  if (compressedRows.length > 0) {
+    infoEl.classList.add('visible');
+    infoEl.innerHTML = '⚠️ <strong>以下のタイプは期間を圧縮しています：</strong> ' +
+      compressedRows.map(r => `${r.subject}（${r.type==='main'?'メイン':'サブ'}）約${Math.round(r.ratio*100)}%`).join('、');
+  } else {
+    infoEl.classList.remove('visible');
+  }
+
+  renderTable(placements, startIdx);
+
+  renderBookGallery(selected);
+
+  document.getElementById('screen-input').classList.remove('active');
+  document.getElementById('screen-roadmap').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function renderTable(placements, startIdx) {
+  // 科目 → [使われているタイプ] の順に出力
+  const TYPE_ORDER = ['main', 'sub', 'sub2'];
+  const TYPE_LABEL = { main:'メイン', sub:'サブ', sub2:'サブ2' };
+  const usedRows = {};
+  for (const p of placements) {
+    if (!usedRows[p.tb.subject]) usedRows[p.tb.subject] = [];
+    if (!usedRows[p.tb.subject].includes(p.tb.type))
+      usedRows[p.tb.subject].push(p.tb.type);
+  }
+  // メイン→サブの順に並べ替え
+  Object.keys(usedRows).forEach(k => {
+    usedRows[k].sort((a,b) => TYPE_ORDER.indexOf(a) - TYPE_ORDER.indexOf(b));
+  });
+
+  let html = '<thead><tr>';
+  html += '<th class="col-subject">科目</th><th class="col-cat">タイプ</th>';
+  for (let i = 0; i < 12; i++) {
+    const isExam = EXAM_IDX.includes(i);
+    html += `<th class="col-month${isExam?' month-exam':''}">${MONTH_LBL[i]}</th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  for (const subj of SUBJECTS) {
+    const types = usedRows[subj];
+    if (!types || !types.length) continue;
+    const color = SUBJ_COLOR[subj];
+
+    types.forEach((ty, ci) => {
+      const rowPl = placements.filter(p => p.tb.subject===subj && p.tb.type===ty)
+                              .sort((a,b) => a.si - b.si);
+      html += '<tr>';
+
+      if (ci === 0) {
+        html += `<td class="subject-cell" rowspan="${types.length}"
+          style="background:${color}; border:1px solid rgba(255,255,255,0.15);">${escHtml(subj)}</td>`;
+      }
+      html += `<td class="cat-cell" style="border-left:3px solid ${color};">${TYPE_LABEL[ty]}</td>`;
+
+      let mi = 0;
+      while (mi < 12) {
+        const pl    = rowPl.find(p => p.si === mi);
+        const isExam   = EXAM_IDX.includes(mi);
+        const isBefore = mi < startIdx;
+
+        if (pl) {
+          const span      = pl.ei - pl.si + 1;
+          const cellClass = isExam ? ' exam-month' : '';
+          const tooltip   = pl.compressed
+            ? `title="${escAttr(pl.tb.name)}｜標準${pl.originalDur}ヶ月 → 圧縮後${pl.actualDur}ヶ月"`
+            : `title="${escAttr(pl.tb.name)}｜${pl.actualDur}ヶ月"`;
+          html += `<td class="month-cell${cellClass}" colspan="${span}" style="background:${color}18;">
+            <span class="tb-span${pl.compressed?' compressed':''}" style="background:${color};" ${tooltip}>${escHtml(pl.tb.shortName)}${pl.compressed?'*':''}</span>
+          </td>`;
+          mi += span;
+        } else {
+          const bg = isBefore ? ' before-enroll' : isExam ? ' exam-month' : '';
+          html += `<td class="month-cell${bg}"></td>`;
+          mi++;
+        }
+      }
+      html += '</tr>';
+    });
+  }
+
+  html += '</tbody>';
+  document.getElementById('roadmap-table').innerHTML = html;
+}
+
+function showInput() {
+  document.getElementById('screen-roadmap').classList.remove('active');
+  document.getElementById('screen-input').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ========================
+// SETTINGS
+// ========================
+function openSettings() {
+  renderGroupsTable();
+  renderTextbooksTable();
+  document.getElementById('modal-settings').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('modal-settings').classList.remove('open');
+}
+function switchStab(name, btn) {
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.stab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('stab-'+name).classList.add('active');
+}
+
+function renderGroupsTable() {
+  document.getElementById('groups-tbody').innerHTML = groups.map(g => `
+    <tr data-gid="${g.id}">
+      <td><input type="text" value="${escAttr(g.name)}" data-f="name"></td>
+      <td><input type="text" value="${escAttr(g.desc||'')}" data-f="desc" placeholder="偏差値の目安など"></td>
+      <td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function addGroupRow() {
+  const maxId = groups.reduce((m,g)=>Math.max(m,g.id), 0);
+  const tr = document.createElement('tr');
+  tr.dataset.gid = maxId + 1;
+  tr.innerHTML = `
+    <td><input type="text" data-f="name" placeholder="グループ名"></td>
+    <td><input type="text" data-f="desc" placeholder="説明"></td>
+    <td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>
+  `;
+  document.getElementById('groups-tbody').appendChild(tr);
+}
+
+function renderTextbooksTable() {
+  document.getElementById('textbooks-tbody').innerHTML = textbooks.map(tb => `
+    <tr data-tbid="${tb.id}">
+      <td>
+        <select data-f="subject" style="width:100%;">
+          ${SUBJECTS.map(s=>`<option value="${s}" ${s===tb.subject?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select data-f="type" style="width:100%;">
+          <option value="main" ${tb.type==='main'?'selected':''}>メイン</option>
+          <option value="sub"  ${tb.type==='sub' ?'selected':''}>サブ</option>
+        </select>
+      </td>
+      <td><input type="number" value="${tb.order||1}" data-f="order" min="1" max="20" style="width:100%;"></td>
+      <td><input type="text" value="${escAttr(tb.name)}" data-f="name"></td>
+      <td><input type="text" value="${escAttr(tb.shortName)}" data-f="shortName"></td>
+      <td><input type="number" value="${tb.duration}" data-f="duration" min="1" max="12" style="width:42px;"></td>
+      <td><input type="number" value="${tb.minDuration}" data-f="minDuration" min="1" max="12" style="width:42px;"></td>
+      <td>
+        <div class="group-checks">
+          ${groups.map(g => `
+            <label class="group-check">
+              <input type="checkbox" data-f="grp" data-gid="${g.id}" ${tb.groups.includes(g.id)?'checked':''}>
+              <span>${escHtml(g.name)}</span>
+            </label>
+          `).join('')}
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+          <div class="cover-preview">${getCoverUrl(tb) ? `<img src="${getCoverUrl(tb)}" style="height:48px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">` : ''}</div>
+          <input type="text" value="${escAttr(tb.isbn||'')}" data-f="isbn" placeholder="ISBN" style="width:100%;font-size:10px;">
+          <button class="fetch-btn" onclick="fetchCoverForRow(this)">🔍取得</button>
+        </div>
+      </td>
+      <td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function addTextbookRow() {
+  const maxId = textbooks.reduce((m,t)=>Math.max(m,t.id), 0);
+  const tr = document.createElement('tr');
+  tr.dataset.tbid = maxId + 1;
+  tr.innerHTML = `
+    <td>
+      <select data-f="subject" style="width:100%;">
+        ${SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('')}
+      </select>
+    </td>
+    <td>
+      <select data-f="type" style="width:100%;">
+        <option value="main">メイン</option>
+        <option value="sub">サブ</option>
+      </select>
+    </td>
+    <td><input type="number" value="1" data-f="order" min="1" max="20" style="width:100%;"></td>
+    <td><input type="text" data-f="name" placeholder="テキスト名"></td>
+    <td><input type="text" data-f="shortName" placeholder="略称"></td>
+    <td><input type="number" value="4" data-f="duration" min="1" max="12" style="width:42px;"></td>
+    <td><input type="number" value="2" data-f="minDuration" min="1" max="12" style="width:42px;"></td>
+    <td>
+      <div class="group-checks">
+        ${groups.map(g=>`
+          <label class="group-check">
+            <input type="checkbox" data-f="grp" data-gid="${g.id}" checked>
+            <span>${escHtml(g.name)}</span>
+          </label>
+        `).join('')}
+      </div>
+    </td>
+    <td>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+        <div class="cover-preview"></div>
+        <input type="text" data-f="isbn" placeholder="ISBN" style="width:100%;font-size:10px;">
+        <button class="fetch-btn" onclick="fetchCoverForRow(this)">🔍取得</button>
+      </div>
+    </td>
+    <td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>
+  `;
+  document.getElementById('textbooks-tbody').appendChild(tr);
+}
+
+function saveSettings() {
+  groups = Array.from(document.querySelectorAll('#groups-tbody tr')).map((tr,i) => ({
+    id:   parseInt(tr.dataset.gid),
+    name: tr.querySelector('[data-f="name"]').value.trim() || ('グループ'+(i+1)),
+    desc: tr.querySelector('[data-f="desc"]').value.trim(),
+  })).filter(g => g.name);
+
+  textbooks = Array.from(document.querySelectorAll('#textbooks-tbody tr')).map(tr => {
+    const checkedGroups = Array.from(tr.querySelectorAll('[data-f="grp"]:checked'))
+      .map(cb => parseInt(cb.dataset.gid));
+    const nameVal = tr.querySelector('[data-f="name"]').value.trim();
+    const isbnEl  = tr.querySelector('[data-f="isbn"]');
+    const isbn    = isbnEl ? isbnEl.value.trim() : '';
+    const typeEl  = tr.querySelector('[data-f="type"]');
+    const orderEl = tr.querySelector('[data-f="order"]');
+    return {
+      id:          parseInt(tr.dataset.tbid),
+      subject:     tr.querySelector('[data-f="subject"]').value,
+      type:        typeEl ? typeEl.value : 'main',
+      order:       orderEl ? (parseInt(orderEl.value) || 1) : 1,
+      name:        nameVal,
+      shortName:   tr.querySelector('[data-f="shortName"]').value.trim(),
+      duration:    parseInt(tr.querySelector('[data-f="duration"]').value) || 4,
+      minDuration: parseInt(tr.querySelector('[data-f="minDuration"]').value) || 2,
+      groups:      checkedGroups,
+      isbn:        isbn,
+    };
+  }).filter(tb => tb.name);
+
+  renderGroupSelector();
+  renderTextbookSelector();
+  closeSettings();
+}
+
+// ========================
+// UTILS
+// ========================
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) { return escHtml(s); }
+
+// ========================
+// START
+// ========================
+init();
+</script>
+</body>
+</html>
+
