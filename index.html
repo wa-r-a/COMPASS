@@ -252,7 +252,7 @@ body {
 }
 .modal-overlay.open { display: flex; }
 .modal {
-  background: white; border-radius: 12px; width: 100%; max-width: 880px;
+  background: white; border-radius: 12px; width: 100%; max-width: 1200px;
   box-shadow: 0 12px 48px rgba(0,0,0,0.3); margin: auto;
 }
 .modal-header {
@@ -281,10 +281,10 @@ body {
   background: var(--gray-100); padding: 7px 8px; text-align: left;
   font-weight: 600; border: 1px solid var(--gray-200); font-size: 11px;
 }
-.stg-table td { padding: 4px 6px; border: 1px solid var(--gray-200); vertical-align: middle; }
+.stg-table td { padding: 5px 7px; border: 1px solid var(--gray-200); vertical-align: middle; }
 .stg-table input, .stg-table select {
-  width: 100%; padding: 4px 6px; border: 1px solid var(--gray-300);
-  border-radius: 4px; font-size: 11px; font-family: inherit;
+  width: 100%; padding: 5px 7px; border: 1px solid var(--gray-300);
+  border-radius: 4px; font-size: 12px; font-family: inherit;
 }
 .stg-table input:focus, .stg-table select:focus { outline: none; border-color: var(--red); }
 
@@ -292,6 +292,18 @@ body {
 .group-checks { display: flex; gap: 4px; flex-wrap: nowrap; }
 .group-check { display: flex; align-items: center; gap: 2px; font-size: 10px; cursor: pointer; white-space: nowrap; }
 .group-check input { width: 13px; height: 13px; accent-color: var(--red); }
+
+
+/* ドラッグ並び替え */
+.drag-handle {
+  cursor: grab; color: var(--gray-400); font-size: 16px; user-select: none;
+  display: flex; align-items: center; justify-content: center; padding: 0 4px;
+  transition: color 0.15s;
+}
+.drag-handle:hover { color: var(--gray-600); }
+.drag-handle:active { cursor: grabbing; }
+tr.dragging { opacity: 0.4; background: var(--pale-red) !important; }
+tr.drag-over { border-top: 2px solid var(--red); }
 
 .btn-del { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 14px; padding: 2px 5px; border-radius: 4px; transition: all 0.1s; }
 .btn-del:hover { background: #fee; color: var(--red); }
@@ -590,16 +602,17 @@ body {
         </p>
         <table class="stg-table">
           <thead><tr>
-            <th style="width:9%">科目</th>
-            <th style="width:10%">タイプ</th>
-            <th style="width:48px">順序</th>
-            <th style="width:68px">開始月</th>
-            <th>テキスト名</th>
-            <th style="width:11%">略称</th>
-            <th style="width:48px">標準(月)</th>
-            <th style="width:48px">最短(月)</th>
-            <th style="min-width:170px">対象グループ</th>
-            <th style="width:120px">ISBN / 表紙</th>
+            <th style="width:24px"></th>
+            <th style="width:8%">科目</th>
+            <th style="width:8%">タイプ</th>
+            <th style="width:40px">順序</th>
+            <th style="width:60px">開始月</th>
+            <th style="min-width:160px">テキスト名</th>
+            <th style="width:9%">略称</th>
+            <th style="width:44px">標準(月)</th>
+            <th style="width:44px">最短(月)</th>
+            <th style="min-width:160px">対象グループ</th>
+            <th style="width:110px">ISBN / 表紙</th>
             <th style="width:32px"></th>
           </tr></thead>
           <tbody id="textbooks-tbody"></tbody>
@@ -1113,6 +1126,7 @@ function openSettings() {
   renderGroupsTable();
   renderTextbooksTable();
   document.getElementById('modal-settings').classList.add('open');
+  initDragSort(document.getElementById('textbooks-tbody'));
 }
 function closeSettings() {
   document.getElementById('modal-settings').classList.remove('open');
@@ -1159,7 +1173,8 @@ function startMonthSelect(val) {
 
 function renderTextbooksTable() {
   document.getElementById('textbooks-tbody').innerHTML = textbooks.map(tb => `
-    <tr data-tbid="${tb.id}">
+    <tr data-tbid="${tb.id}" draggable="true">
+      <td class="drag-handle" title="ドラッグで並び替え">⠿</td>
       <td>
         <select data-f="subject" style="width:100%;">
           ${SUBJECTS.map(s=>`<option value="${s}" ${s===tb.subject?'selected':''}>${s}</option>`).join('')}
@@ -1173,7 +1188,7 @@ function renderTextbooksTable() {
       </td>
       <td><input type="number" value="${tb.order||1}" data-f="order" min="1" max="20" style="width:100%;"></td>
       <td>${startMonthSelect(tb.startMonth)}</td>
-      <td><input type="text" value="${escAttr(tb.name)}" data-f="name"></td>
+      <td><input type="text" value="${escAttr(tb.name)}" data-f="name" style="min-width:140px;"></td>
       <td><input type="text" value="${escAttr(tb.shortName)}" data-f="shortName"></td>
       <td><input type="number" value="${tb.duration}" data-f="duration" min="1" max="12" style="width:42px;"></td>
       <td><input type="number" value="${tb.minDuration}" data-f="minDuration" min="1" max="12" style="width:42px;"></td>
@@ -1203,7 +1218,9 @@ function addTextbookRow() {
   const maxId = textbooks.reduce((m,t)=>Math.max(m,t.id), 0);
   const tr = document.createElement('tr');
   tr.dataset.tbid = maxId + 1;
+  tr.draggable = true;
   tr.innerHTML = `
+    <td class="drag-handle" title="ドラッグで並び替え">⠿</td>
     <td>
       <select data-f="subject" style="width:100%;">
         ${SUBJECTS.map(s=>`<option value="${s}">${s}</option>`).join('')}
@@ -1217,7 +1234,7 @@ function addTextbookRow() {
     </td>
     <td><input type="number" value="1" data-f="order" min="1" max="20" style="width:100%;"></td>
     <td>${startMonthSelect(null)}</td>
-    <td><input type="text" data-f="name" placeholder="テキスト名"></td>
+    <td><input type="text" data-f="name" placeholder="テキスト名" style="min-width:140px;"></td>
     <td><input type="text" data-f="shortName" placeholder="略称"></td>
     <td><input type="number" value="4" data-f="duration" min="1" max="12" style="width:42px;"></td>
     <td><input type="number" value="2" data-f="minDuration" min="1" max="12" style="width:42px;"></td>
@@ -1241,6 +1258,45 @@ function addTextbookRow() {
     <td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>
   `;
   document.getElementById('textbooks-tbody').appendChild(tr);
+}
+
+
+// ========================
+// DRAG SORT (テキストマスター)
+// ========================
+function initDragSort(tbody) {
+  let dragSrc = null;
+
+  tbody.addEventListener('dragstart', e => {
+    const tr = e.target.closest('tr');
+    if (!tr) return;
+    dragSrc = tr;
+    setTimeout(() => tr.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  tbody.addEventListener('dragover', e => {
+    e.preventDefault();
+    const tr = e.target.closest('tr');
+    if (!tr || tr === dragSrc) return;
+    const rect = tr.getBoundingClientRect();
+    const mid  = rect.top + rect.height / 2;
+    if (e.clientY < mid) {
+      tbody.insertBefore(dragSrc, tr);
+    } else {
+      tr.after(dragSrc);
+    }
+  });
+
+  tbody.addEventListener('dragend', () => {
+    if (dragSrc) dragSrc.classList.remove('dragging');
+    dragSrc = null;
+    // 順序フィールドを自動更新
+    Array.from(tbody.querySelectorAll('tr')).forEach((tr, i) => {
+      const inp = tr.querySelector('[data-f="order"]');
+      if (inp) inp.value = i + 1;
+    });
+  });
 }
 
 function saveSettings() {
