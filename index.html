@@ -579,6 +579,7 @@ tr.drag-over { border-top: 2px solid var(--red); }
       <div class="settings-tabs">
         <button class="stab active" onclick="switchStab('groups',this)">偏差値グループ</button>
         <button class="stab" onclick="switchStab('textbooks',this)">テキストマスター</button>
+        <button class="stab" onclick="switchStab('connection',this)">🔗 共有設定</button>
       </div>
 
       <div id="stab-groups" class="stab-content active">
@@ -621,6 +622,29 @@ tr.drag-over { border-top: 2px solid var(--red); }
         <button class="btn-fetch-all" id="btn-fetch-all" onclick="fetchAllCovers()">🖼 全テキストの表紙を一括取得（Google Books）</button>
       </div>
     </div>
+      <div id="stab-connection" class="stab-content">
+        <p class="hint-text">Google Apps Script のURLを設定すると、テキストマスター・グループ設定をスタッフ間でリアルタイムに共有できます。</p>
+        <div style="margin-top:16px;">
+          <label style="font-weight:600;display:block;margin-bottom:6px;">Apps Script URL</label>
+          <input type="text" id="gas-url-input"
+            style="width:100%;padding:8px 10px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;"
+            placeholder="https://script.google.com/macros/s/xxxxxx/exec">
+          <p style="color:var(--gray-600);font-size:12px;margin-top:6px;">
+            Google Apps Script を作成してWebアプリとして公開したURLを貼り付けてください。
+          </p>
+        </div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="testGasConnection()">🔍 接続テスト</button>
+          <span id="gas-status" style="font-size:13px;"></span>
+        </div>
+        <div style="margin-top:20px;padding:14px;background:var(--gray-100);border-radius:8px;font-size:13px;color:var(--gray-600);">
+          <strong>設定の仕組み：</strong><br>
+          ・URLを設定すると「保存して閉じる」で全スタッフのスプレッドシートに保存されます。<br>
+          ・他のスタッフがページを開くと、最新の設定が自動で読み込まれます。<br>
+          ・URLが未設定の場合はこのブラウザにのみ保存されます。
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-secondary btn-sm" onclick="closeSettings()">キャンセル</button>
       <button class="btn btn-primary btn-sm" onclick="saveSettings()">✓ 保存して閉じる</button>
@@ -646,7 +670,7 @@ const SUBJ_COLOR = {
 // ========================
 // DEFAULT DATA
 // ========================
-let groups = [
+const DEFAULT_GROUPS = [
   { id:1, name:"難関",   desc:"偏差値65以上" },
   { id:2, name:"上位",   desc:"偏差値55〜64" },
   { id:3, name:"中堅",   desc:"偏差値45〜54" },
@@ -655,7 +679,7 @@ let groups = [
 
 // groups: 対象グループIDの配列。例 [1,2] = 難関・上位のみ、[1,2,3,4] = 全グループ
 // minDuration: 最短学習期間（入塾が遅い場合の下限）
-let textbooks = [
+const DEFAULT_TEXTBOOKS = [
   // 英語
   { id: 1,  subject:"英語", type:"main", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
   { id: 3,  subject:"英語", type:"main", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
@@ -688,11 +712,87 @@ let textbooks = [
   { id:22,  subject:"社会", type:"sub",  name:"全国高校入試問題正解 社会",     shortName:"全国入試社", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4] },
 ];
 
+let groups    = [];
+let textbooks = [];
 
 // ========================
 // COVER CACHE (localStorage)
 // ========================
 let coverCache = {};
+
+// ========================
+// DATA LOAD / SAVE (GAS連携)
+// ========================
+function getGasUrl() {
+  return localStorage.getItem('compass_gas_url') || '';
+}
+
+async function loadDataFromGAS() {
+  const url = getGasUrl();
+  if (!url) {
+    try {
+      const saved = localStorage.getItem('compass_settings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        groups    = parsed.groups    || DEFAULT_GROUPS.map(g => ({...g}));
+        textbooks = parsed.textbooks || DEFAULT_TEXTBOOKS.map(t => ({...t}));
+      } else {
+        groups    = DEFAULT_GROUPS.map(g => ({...g}));
+        textbooks = DEFAULT_TEXTBOOKS.map(t => ({...t}));
+      }
+    } catch(e) {
+      groups    = DEFAULT_GROUPS.map(g => ({...g}));
+      textbooks = DEFAULT_TEXTBOOKS.map(t => ({...t}));
+    }
+    return;
+  }
+  try {
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.groups    && data.groups.length)    groups    = data.groups;
+    if (data.textbooks && data.textbooks.length) textbooks = data.textbooks;
+  } catch(e) {
+    console.warn('GAS読み込み失敗、ローカルデータを使用:', e);
+    groups    = DEFAULT_GROUPS.map(g => ({...g}));
+    textbooks = DEFAULT_TEXTBOOKS.map(t => ({...t}));
+  }
+}
+
+async function saveToGAS(g, tb) {
+  const url = getGasUrl();
+  if (!url) return false;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ groups: g, textbooks: tb }),
+    });
+    return true;
+  } catch(e) {
+    console.warn('GAS保存失敗:', e);
+    return false;
+  }
+}
+
+async function testGasConnection() {
+  const url = document.getElementById('gas-url-input').value.trim();
+  const statusEl = document.getElementById('gas-status');
+  if (!url) { statusEl.textContent = '⚠ URLを入力してください'; statusEl.style.color = 'orange'; return; }
+  statusEl.textContent = '接続中...'; statusEl.style.color = 'var(--gray-600)';
+  try {
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (data.textbooks !== undefined) {
+      statusEl.textContent = '✅ 接続成功！データを取得できました';
+      statusEl.style.color = 'var(--green)';
+    } else {
+      statusEl.textContent = '⚠ 接続できましたがデータ形式が不正です';
+      statusEl.style.color = 'orange';
+    }
+  } catch(e) {
+    statusEl.textContent = '❌ 接続失敗: ' + e.message;
+    statusEl.style.color = 'red';
+  }
+}
 
 function loadCovers() {
   try {
@@ -809,7 +909,8 @@ function renderBookGallery(selected) {
 // ========================
 // INIT
 // ========================
-function init() {
+async function init() {
+  await loadDataFromGAS();
   loadCovers();
   renderGroupSelector();
   renderTextbookSelector();
@@ -1125,6 +1226,8 @@ function showInput() {
 function openSettings() {
   renderGroupsTable();
   renderTextbooksTable();
+  const gasInput = document.getElementById('gas-url-input');
+  if (gasInput) gasInput.value = getGasUrl();
   document.getElementById('modal-settings').classList.add('open');
   initDragSort(document.getElementById('textbooks-tbody'));
 }
@@ -1299,7 +1402,13 @@ function initDragSort(tbody) {
   });
 }
 
-function saveSettings() {
+async function saveSettings() {
+  const gasUrlInput = document.getElementById('gas-url-input');
+  if (gasUrlInput) {
+    const newUrl = gasUrlInput.value.trim();
+    localStorage.setItem('compass_gas_url', newUrl);
+  }
+
   groups = Array.from(document.querySelectorAll('#groups-tbody tr')).map((tr,i) => ({
     id:   parseInt(tr.dataset.gid),
     name: tr.querySelector('[data-f="name"]').value.trim() || ('グループ'+(i+1)),
@@ -1331,9 +1440,22 @@ function saveSettings() {
     };
   }).filter(tb => tb.name);
 
+  // localStorageにも保存（フォールバック）
+  localStorage.setItem('compass_settings', JSON.stringify({ groups, textbooks }));
+
+  // GASに保存
+  const gasOk = await saveToGAS(groups, textbooks);
+
   renderGroupSelector();
   renderTextbookSelector();
   closeSettings();
+  if (gasOk) {
+    const toast = document.createElement('div');
+    toast.textContent = '✅ スプレッドシートに保存しました（全スタッフに反映されます）';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a7a45;color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.2)';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+  }
 }
 
 // ========================
