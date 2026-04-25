@@ -127,9 +127,11 @@ body {
   padding: 2px 8px; border-radius: 3px; white-space: nowrap;
   min-width: 42px; text-align: center; flex-shrink: 0; letter-spacing: 1px;
 }
-.tb-type-badge.main { background: var(--deep-red); }
-.tb-type-badge.sub  { background: var(--gray-600); }
-.tb-type-badge.sub2 { background: var(--blue); }
+.tb-type-badge.term1 { background: #1a5e3a; }
+.tb-type-badge.term2 { background: #1a6fa8; }
+.tb-type-badge.final { background: var(--deep-red); }
+.tb-type-badge.sub   { background: var(--gray-600); }
+.tb-type-badge.sub2  { background: var(--purple); }
 
 /* === 科目＋タイプ見出し === */
 .type-header {
@@ -139,9 +141,11 @@ body {
   border-radius: 3px; font-size: 12px; font-weight: 700;
 }
 .type-header:first-child { margin-top: 0; }
-.type-header.main { border-left-color: var(--red); background: #fef5f4; }
-.type-header.sub  { border-left-color: var(--gray-600); }
-.type-header.sub2 { border-left-color: var(--blue); background: #eef4fb; }
+.type-header.term1 { border-left-color: #1a5e3a; background: #f0faf4; }
+.type-header.term2 { border-left-color: var(--blue); background: #eef4fb; }
+.type-header.final { border-left-color: var(--red); background: #fef5f4; }
+.type-header.sub   { border-left-color: var(--gray-600); }
+.type-header.sub2  { border-left-color: var(--purple); background: #f5f0fb; }
 .type-header .type-label { color: var(--gray-800); }
 .type-header .subj-label {
   padding: 1px 6px; border-radius: 3px; color: white; font-size: 11px;
@@ -681,9 +685,9 @@ const DEFAULT_GROUPS = [
 // minDuration: 最短学習期間（入塾が遅い場合の下限）
 const DEFAULT_TEXTBOOKS = [
   // 英語
-  { id: 1,  subject:"英語", type:"main", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id: 3,  subject:"英語", type:"main", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id: 5,  subject:"英語", type:"main", name:"英語長文問題の完全制覇",       shortName:"長文完全",   isbn:"", duration:3, minDuration:2, order:3, startMonth:null, groups:[1,2,3] },
+  { id: 1,  subject:"英語", type:"term1", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
+  { id: 3,  subject:"英語", type:"term2", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id: 5,  subject:"英語", type:"final", name:"英語長文問題の完全制覇",       shortName:"長文完全",   isbn:"", duration:3, minDuration:2, order:3, startMonth:null, groups:[1,2,3] },
   { id: 2,  subject:"英語", type:"sub",  name:"でる順パス単 中学英単語",      shortName:"パス単",     isbn:"9784010944592", duration:4, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
   { id: 4,  subject:"英語", type:"sub",  name:"高校入試 英語長文・文法攻略",  shortName:"文法攻略",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2] },
   { id: 6,  subject:"英語", type:"sub",  name:"全国高校入試問題正解 英語",    shortName:"全国入試英", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
@@ -691,24 +695,24 @@ const DEFAULT_TEXTBOOKS = [
   { id:23,  subject:"英語", type:"sub2", name:"英語リスニング完全攻略",          shortName:"リスニング",  isbn:"", duration:2, minDuration:1, order:1, startMonth:null, groups:[1,2,3,4] },
   { id:24,  subject:"英語", type:"sub2", name:"英作文・自由英作文対策",           shortName:"英作文",      isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2] },
   // 数学
-  { id: 7,  subject:"数学", type:"main", name:"チャート式 中学数学",          shortName:"チャート数", isbn:"", duration:5, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id: 9,  subject:"数学", type:"main", name:"中学数学 図形・関数の攻略",     shortName:"図形関数",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:10,  subject:"数学", type:"main", name:"実戦問題演習 公立入試数学",     shortName:"公立演習数", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
+  { id: 7,  subject:"数学", type:"term1", name:"チャート式 中学数学",          shortName:"チャート数", isbn:"", duration:5, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
+  { id: 9,  subject:"数学", type:"term2", name:"中学数学 図形・関数の攻略",     shortName:"図形関数",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id:10,  subject:"数学", type:"final", name:"実戦問題演習 公立入試数学",     shortName:"公立演習数", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
   { id: 8,  subject:"数学", type:"sub",  name:"数学標準問題集（計算・方程式）", shortName:"数学標準",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
   { id:11,  subject:"数学", type:"sub",  name:"全国高校入試問題正解 数学",     shortName:"全国入試数", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2] },
   // 国語
-  { id:12,  subject:"国語", type:"main", name:"中学漢字スタートアップ",        shortName:"漢字SU",     isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id:13,  subject:"国語", type:"main", name:"中学国語読解問題の攻略",        shortName:"国語読解",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id:12,  subject:"国語", type:"term1", name:"中学漢字スタートアップ",        shortName:"漢字SU",     isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3,4] },
+  { id:13,  subject:"国語", type:"term2", name:"中学国語読解問題の攻略",        shortName:"国語読解",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
   { id:15,  subject:"国語", type:"sub",  name:"中学古文・漢文 完全攻略",       shortName:"古文漢文",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
   { id:14,  subject:"国語", type:"sub",  name:"全国高校入試問題正解 国語",     shortName:"全国入試国", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2,3,4] },
   // 理科（夏から：7月スタート）
-  { id:16,  subject:"理科", type:"main", name:"中学理科完全攻略（物理・化学）", shortName:"理科物化",   isbn:"", duration:4, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
-  { id:17,  subject:"理科", type:"main", name:"中学理科完全攻略（生物・地学）", shortName:"理科生地",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id:16,  subject:"理科", type:"term1", name:"中学理科完全攻略（物理・化学）", shortName:"理科物化",   isbn:"", duration:4, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
+  { id:17,  subject:"理科", type:"term2", name:"中学理科完全攻略（生物・地学）", shortName:"理科生地",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
   { id:18,  subject:"理科", type:"sub",  name:"全国高校入試問題正解 理科",     shortName:"全国入試理", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4] },
   // 社会（夏から：7月スタート）
-  { id:19,  subject:"社会", type:"main", name:"中学地理が面白いほどわかる本",  shortName:"地理",       isbn:"", duration:3, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
-  { id:20,  subject:"社会", type:"main", name:"中学歴史が面白いほどわかる本",  shortName:"歴史",       isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:21,  subject:"社会", type:"main", name:"中学公民が面白いほどわかる本",  shortName:"公民",       isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
+  { id:19,  subject:"社会", type:"term1", name:"中学地理が面白いほどわかる本",  shortName:"地理",       isbn:"", duration:3, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
+  { id:20,  subject:"社会", type:"term2", name:"中学歴史が面白いほどわかる本",  shortName:"歴史",       isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id:21,  subject:"社会", type:"final", name:"中学公民が面白いほどわかる本",  shortName:"公民",       isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
   { id:22,  subject:"社会", type:"sub",  name:"全国高校入試問題正解 社会",     shortName:"全国入試社", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4] },
 ];
 
@@ -1009,15 +1013,20 @@ function renderTextbookSelector() {
   // order順でソート
   Object.values(byKey).forEach(arr => arr.sort((a,b) => (a.order||99) - (b.order||99)));
 
+  const SUB2_SUBJECTS = ['英語', '国語'];
   const TYPES = [
-    { key:'main', label:'メイン' },
-    { key:'sub',  label:'サブ' },
-    { key:'sub2', label:'サブ2' },
+    { key:'term1', label:'前期' },
+    { key:'term2', label:'夏期／後期' },
+    { key:'final', label:'直前' },
+    { key:'sub',   label:'サブ' },
+    { key:'sub2',  label:'サブ2' },
   ];
 
   container.innerHTML = SUBJECTS.map(subj => {
     const key = SUBJ_KEY[subj];
     const blocks = TYPES.map(t => {
+      // sub2 は英語・国語のみ表示
+      if (t.key === 'sub2' && !SUB2_SUBJECTS.includes(subj)) return '';
       const list = byKey[subj + '|' + t.key];
       if (!list || !list.length) return '';
       return `
@@ -1131,7 +1140,10 @@ function generateRoadmap() {
   if (compressedRows.length > 0) {
     infoEl.classList.add('visible');
     infoEl.innerHTML = '⚠️ <strong>以下のタイプは期間を圧縮しています：</strong> ' +
-      compressedRows.map(r => `${r.subject}（${r.type==='main'?'メイン':'サブ'}）約${Math.round(r.ratio*100)}%`).join('、');
+      compressedRows.map(r => {
+      const lbl = {term1:'前期',term2:'夏期／後期',final:'直前',sub:'サブ',sub2:'サブ2'}[r.type] || r.type;
+      return `${r.subject}（${lbl}）約${Math.round(r.ratio*100)}%`;
+    }).join('、');
   } else {
     infoEl.classList.remove('visible');
   }
@@ -1147,8 +1159,8 @@ function generateRoadmap() {
 
 function renderTable(placements, startIdx) {
   // 科目 → [使われているタイプ] の順に出力
-  const TYPE_ORDER = ['main', 'sub', 'sub2'];
-  const TYPE_LABEL = { main:'メイン', sub:'サブ', sub2:'サブ2' };
+  const TYPE_ORDER = ['term1', 'term2', 'final', 'sub', 'sub2'];
+  const TYPE_LABEL = { term1:'前期', term2:'夏期／後期', final:'直前', sub:'サブ', sub2:'サブ2' };
   const usedRows = {};
   for (const p of placements) {
     if (!usedRows[p.tb.subject]) usedRows[p.tb.subject] = [];
@@ -1285,8 +1297,11 @@ function renderTextbooksTable() {
       </td>
       <td>
         <select data-f="type" style="width:100%;">
-          <option value="main" ${tb.type==='main'?'selected':''}>メイン</option>
-          <option value="sub"  ${tb.type==='sub' ?'selected':''}>サブ</option>
+          <option value="term1" ${tb.type==='term1'?'selected':''}>前期</option>
+          <option value="term2" ${tb.type==='term2'?'selected':''}>夏期／後期</option>
+          <option value="final" ${tb.type==='final'?'selected':''}>直前</option>
+          <option value="sub"   ${tb.type==='sub'  ?'selected':''}>サブ</option>
+          <option value="sub2"  ${tb.type==='sub2' ?'selected':''}>サブ2</option>
         </select>
       </td>
       <td><input type="number" value="${tb.order||1}" data-f="order" min="1" max="20" style="width:100%;"></td>
@@ -1331,8 +1346,11 @@ function addTextbookRow() {
     </td>
     <td>
       <select data-f="type" style="width:100%;">
-        <option value="main">メイン</option>
+        <option value="term1">前期</option>
+        <option value="term2">夏期／後期</option>
+        <option value="final">直前</option>
         <option value="sub">サブ</option>
+        <option value="sub2">サブ2</option>
       </select>
     </td>
     <td><input type="number" value="1" data-f="order" min="1" max="20" style="width:100%;"></td>
