@@ -685,35 +685,35 @@ const DEFAULT_GROUPS = [
 // minDuration: 最短学習期間（入塾が遅い場合の下限）
 const DEFAULT_TEXTBOOKS = [
   // 英語
-  { id: 1,  subject:"英語", type:"term1", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id: 3,  subject:"英語", type:"term2", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id: 5,  subject:"英語", type:"final", name:"英語長文問題の完全制覇",       shortName:"長文完全",   isbn:"", duration:3, minDuration:2, order:3, startMonth:null, groups:[1,2,3] },
-  { id: 2,  subject:"英語", type:"sub",  name:"でる順パス単 中学英単語",      shortName:"パス単",     isbn:"9784010944592", duration:4, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
-  { id: 4,  subject:"英語", type:"sub",  name:"高校入試 英語長文・文法攻略",  shortName:"文法攻略",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2] },
-  { id: 6,  subject:"英語", type:"sub",  name:"全国高校入試問題正解 英語",    shortName:"全国入試英", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
+  { id: 1,  subject:"英語", type:"term1", name:"中学英単語1800",               shortName:"英単語1800", isbn:"9784010944141", duration:6, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id: 3,  subject:"英語", type:"term2", name:"中学英文法パーフェクトコース",  shortName:"文法PC",     isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id: 5,  subject:"英語", type:"final", name:"英語長文問題の完全制覇",       shortName:"長文完全",   isbn:"", duration:3, minDuration:2, order:3, startMonth:null, groups:[1,2,3], coverUrl:"" },
+  { id: 2,  subject:"英語", type:"sub",  name:"でる順パス単 中学英単語",      shortName:"パス単",     isbn:"9784010944592", duration:4, minDuration:2, order:1, startMonth:null, groups:[1,2,3], coverUrl:"" },
+  { id: 4,  subject:"英語", type:"sub",  name:"高校入試 英語長文・文法攻略",  shortName:"文法攻略",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2], coverUrl:"" },
+  { id: 6,  subject:"英語", type:"sub",  name:"全国高校入試問題正解 英語",    shortName:"全国入試英", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
   // 英語 サブ2
-  { id:23,  subject:"英語", type:"sub2", name:"英語リスニング完全攻略",          shortName:"リスニング",  isbn:"", duration:2, minDuration:1, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id:24,  subject:"英語", type:"sub2", name:"英作文・自由英作文対策",           shortName:"英作文",      isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2] },
+  { id:23,  subject:"英語", type:"sub2", name:"英語リスニング完全攻略",          shortName:"リスニング",  isbn:"", duration:2, minDuration:1, order:1, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:24,  subject:"英語", type:"sub2", name:"英作文・自由英作文対策",           shortName:"英作文",      isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2], coverUrl:"" },
   // 数学
-  { id: 7,  subject:"数学", type:"term1", name:"チャート式 中学数学",          shortName:"チャート数", isbn:"", duration:5, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id: 9,  subject:"数学", type:"term2", name:"中学数学 図形・関数の攻略",     shortName:"図形関数",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:10,  subject:"数学", type:"final", name:"実戦問題演習 公立入試数学",     shortName:"公立演習数", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
-  { id: 8,  subject:"数学", type:"sub",  name:"数学標準問題集（計算・方程式）", shortName:"数学標準",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
-  { id:11,  subject:"数学", type:"sub",  name:"全国高校入試問題正解 数学",     shortName:"全国入試数", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2] },
+  { id: 7,  subject:"数学", type:"term1", name:"チャート式 中学数学",          shortName:"チャート数", isbn:"", duration:5, minDuration:3, order:1, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id: 9,  subject:"数学", type:"term2", name:"中学数学 図形・関数の攻略",     shortName:"図形関数",   isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:10,  subject:"数学", type:"final", name:"実戦問題演習 公立入試数学",     shortName:"公立演習数", isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id: 8,  subject:"数学", type:"sub",  name:"数学標準問題集（計算・方程式）", shortName:"数学標準",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3], coverUrl:"" },
+  { id:11,  subject:"数学", type:"sub",  name:"全国高校入試問題正解 数学",     shortName:"全国入試数", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2], coverUrl:"" },
   // 国語
-  { id:12,  subject:"国語", type:"term1", name:"中学漢字スタートアップ",        shortName:"漢字SU",     isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3,4] },
-  { id:13,  subject:"国語", type:"term2", name:"中学国語読解問題の攻略",        shortName:"国語読解",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:15,  subject:"国語", type:"sub",  name:"中学古文・漢文 完全攻略",       shortName:"古文漢文",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3] },
-  { id:14,  subject:"国語", type:"sub",  name:"全国高校入試問題正解 国語",     shortName:"全国入試国", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2,3,4] },
+  { id:12,  subject:"国語", type:"term1", name:"中学漢字スタートアップ",        shortName:"漢字SU",     isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:13,  subject:"国語", type:"term2", name:"中学国語読解問題の攻略",        shortName:"国語読解",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:15,  subject:"国語", type:"sub",  name:"中学古文・漢文 完全攻略",       shortName:"古文漢文",   isbn:"", duration:3, minDuration:2, order:1, startMonth:null, groups:[1,2,3], coverUrl:"" },
+  { id:14,  subject:"国語", type:"sub",  name:"全国高校入試問題正解 国語",     shortName:"全国入試国", isbn:"", duration:2, minDuration:1, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
   // 理科（夏から：7月スタート）
-  { id:16,  subject:"理科", type:"term1", name:"中学理科完全攻略（物理・化学）", shortName:"理科物化",   isbn:"", duration:4, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
-  { id:17,  subject:"理科", type:"term2", name:"中学理科完全攻略（生物・地学）", shortName:"理科生地",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:18,  subject:"理科", type:"sub",  name:"全国高校入試問題正解 理科",     shortName:"全国入試理", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4] },
+  { id:16,  subject:"理科", type:"term1", name:"中学理科完全攻略（物理・化学）", shortName:"理科物化",   isbn:"", duration:4, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4], coverUrl:"" },
+  { id:17,  subject:"理科", type:"term2", name:"中学理科完全攻略（生物・地学）", shortName:"理科生地",   isbn:"", duration:4, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:18,  subject:"理科", type:"sub",  name:"全国高校入試問題正解 理科",     shortName:"全国入試理", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4], coverUrl:"" },
   // 社会（夏から：7月スタート）
-  { id:19,  subject:"社会", type:"term1", name:"中学地理が面白いほどわかる本",  shortName:"地理",       isbn:"", duration:3, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4] },
-  { id:20,  subject:"社会", type:"term2", name:"中学歴史が面白いほどわかる本",  shortName:"歴史",       isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4] },
-  { id:21,  subject:"社会", type:"final", name:"中学公民が面白いほどわかる本",  shortName:"公民",       isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4] },
-  { id:22,  subject:"社会", type:"sub",  name:"全国高校入試問題正解 社会",     shortName:"全国入試社", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4] },
+  { id:19,  subject:"社会", type:"term1", name:"中学地理が面白いほどわかる本",  shortName:"地理",       isbn:"", duration:3, minDuration:2, order:1, startMonth:7, groups:[1,2,3,4], coverUrl:"" },
+  { id:20,  subject:"社会", type:"term2", name:"中学歴史が面白いほどわかる本",  shortName:"歴史",       isbn:"", duration:3, minDuration:2, order:2, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:21,  subject:"社会", type:"final", name:"中学公民が面白いほどわかる本",  shortName:"公民",       isbn:"", duration:2, minDuration:1, order:3, startMonth:null, groups:[1,2,3,4], coverUrl:"" },
+  { id:22,  subject:"社会", type:"sub",  name:"全国高校入試問題正解 社会",     shortName:"全国入試社", isbn:"", duration:2, minDuration:1, order:1, startMonth:7, groups:[1,2,3,4], coverUrl:"" },
 ];
 
 let groups    = [];
@@ -723,6 +723,26 @@ let textbooks = [];
 // COVER CACHE (localStorage)
 // ========================
 let coverCache = {};
+
+// ========================
+// MIGRATION: 旧 type:"main" → term1/term2/final へ自動変換
+// ========================
+function migrateTextbookTypes(tbs) {
+  const termMap = ['term1', 'term2', 'final'];
+  const bySubj = {};
+  for (const tb of tbs) {
+    if (tb.type === 'main') {
+      (bySubj[tb.subject] = bySubj[tb.subject] || []).push(tb);
+    }
+    // GASから読み込んだ coverUrl を coverCache にも反映（表示用キャッシュ）
+    if (tb.coverUrl) coverCache[tb.name] = tb.coverUrl;
+  }
+  for (const items of Object.values(bySubj)) {
+    items.sort((a, b) => (a.order || 99) - (b.order || 99));
+    items.forEach((tb, i) => { tb.type = termMap[Math.min(i, 2)]; });
+  }
+  return tbs;
+}
 
 // ========================
 // DATA LOAD / SAVE (GAS連携)
@@ -739,7 +759,7 @@ async function loadDataFromGAS() {
       if (saved) {
         const parsed = JSON.parse(saved);
         groups    = parsed.groups    || DEFAULT_GROUPS.map(g => ({...g}));
-        textbooks = parsed.textbooks || DEFAULT_TEXTBOOKS.map(t => ({...t}));
+        textbooks = migrateTextbookTypes(parsed.textbooks || DEFAULT_TEXTBOOKS.map(t => ({...t})));
       } else {
         groups    = DEFAULT_GROUPS.map(g => ({...g}));
         textbooks = DEFAULT_TEXTBOOKS.map(t => ({...t}));
@@ -754,7 +774,7 @@ async function loadDataFromGAS() {
     const res  = await fetch(url);
     const data = await res.json();
     if (data.groups    && data.groups.length)    groups    = data.groups;
-    if (data.textbooks && data.textbooks.length) textbooks = data.textbooks;
+    if (data.textbooks && data.textbooks.length) textbooks = migrateTextbookTypes(data.textbooks);
   } catch(e) {
     console.warn('GAS読み込み失敗、ローカルデータを使用:', e);
     groups    = DEFAULT_GROUPS.map(g => ({...g}));
@@ -811,8 +831,20 @@ function saveCovers() {
   } catch(e) {}
 }
 
+function driveUrlToDirect(url) {
+  if (!url) return '';
+  // https://drive.google.com/file/d/FILE_ID/view → thumbnail URL
+  const m = url.match(/\/d\/([A-Za-z0-9_-]+)/);
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w120`;
+  // https://drive.google.com/open?id=FILE_ID
+  const m2 = url.match(/[?&]id=([A-Za-z0-9_-]+)/);
+  if (m2) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w120`;
+  return url;
+}
+
 function getCoverUrl(tb) {
-  return coverCache[tb.name] || '';
+  const raw = tb.coverUrl || coverCache[tb.name] || '';
+  return driveUrlToDirect(raw);
 }
 
 async function fetchCoverByQuery(query) {
@@ -828,6 +860,15 @@ async function fetchCoverByQuery(query) {
     }
   } catch(e) {}
   return '';
+}
+
+function onCoverUrlInput(input) {
+  const tr      = input.closest('tr');
+  const preview = tr.querySelector('.cover-preview');
+  const raw     = input.value.trim();
+  if (!raw) { preview.innerHTML = ''; return; }
+  const url = driveUrlToDirect(raw);
+  preview.innerHTML = `<img src="${url}" style="height:48px;object-fit:contain;border-radius:2px;" onerror="this.parentElement.innerHTML='<span style=\"font-size:10px;color:#c00\">読込失敗</span>'">`;
 }
 
 async function fetchCoverForRow(btn) {
@@ -858,6 +899,9 @@ async function fetchCoverForRow(btn) {
   if (coverUrl && name) {
     coverCache[name] = coverUrl;
     saveCovers();
+    // Drive URL 入力欄にも反映（保存して閉じる → スプシへ送られる）
+    const coverUrlInput = tr.querySelector('[data-f="coverUrl"]');
+    if (coverUrlInput) coverUrlInput.value = coverUrl;
     if (preview) {
       preview.innerHTML = `<img src="${coverUrl}" style="height:48px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">`;
     }
@@ -875,7 +919,7 @@ async function fetchAllCovers() {
     if (!getCoverUrl(tb)) {
       const query  = tb.isbn ? 'isbn:' + tb.isbn : tb.name + ' 中学';
       const url    = await fetchCoverByQuery(query);
-      if (url) { coverCache[tb.name] = url; count++; }
+      if (url) { coverCache[tb.name] = url; tb.coverUrl = url; count++; }
       await new Promise(r => setTimeout(r, 300)); // rate limit
     }
   }
@@ -1439,6 +1483,8 @@ async function saveSettings() {
     const nameVal = tr.querySelector('[data-f="name"]').value.trim();
     const isbnEl  = tr.querySelector('[data-f="isbn"]');
     const isbn    = isbnEl ? isbnEl.value.trim() : '';
+    const coverUrlEl = tr.querySelector('[data-f="coverUrl"]');
+    const coverUrl   = coverUrlEl ? coverUrlEl.value.trim() : (coverCache[nameVal] || '');
     const typeEl  = tr.querySelector('[data-f="type"]');
     const orderEl = tr.querySelector('[data-f="order"]');
     const smEl    = tr.querySelector('[data-f="startMonth"]');
@@ -1455,6 +1501,7 @@ async function saveSettings() {
       minDuration: parseInt(tr.querySelector('[data-f="minDuration"]').value) || 2,
       groups:      checkedGroups,
       isbn:        isbn,
+      coverUrl:    coverUrl,
     };
   }).filter(tb => tb.name);
 
