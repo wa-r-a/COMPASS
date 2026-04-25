@@ -617,7 +617,7 @@ tr.drag-over { border-top: 2px solid var(--red); }
             <th style="width:44px">標準(月)</th>
             <th style="width:44px">最短(月)</th>
             <th style="min-width:160px">対象グループ</th>
-            <th style="width:110px">ISBN / 表紙</th>
+            <th style="width:140px">ISBN / Drive URL / 表紙</th>
             <th style="width:32px"></th>
           </tr></thead>
           <tbody id="textbooks-tbody"></tbody>
@@ -1132,7 +1132,7 @@ function generateRoadmap() {
 
   // 圧縮率計算
   const startIdx         = MONTHS.indexOf(month);
-  const availableMonths  = Math.max(0, 10 - startIdx);
+  const availableMonths  = Math.max(0, 12 - startIdx);
   const compressionRatio = availableMonths / 12;
 
   // 科目×タイプ（メイン/サブ）別に圧縮を適用してplacements計算
@@ -1165,9 +1165,8 @@ function generateRoadmap() {
           cur = smIdx;
         }
       }
-      if (cur > 8) break; // 試験直前は配置しない
       const actualDur = calcCompressedDuration(tb.duration, tb.minDuration, catRatio);
-      const end       = Math.min(cur + actualDur - 1, 8);
+      const end       = Math.min(cur + actualDur - 1, 11);
       placements.push({ tb, si: cur, ei: end, compressed: isCompressed, originalDur: tb.duration, actualDur });
       cur = end + 1;
     }
@@ -1368,6 +1367,7 @@ function renderTextbooksTable() {
         <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
           <div class="cover-preview">${getCoverUrl(tb) ? `<img src="${getCoverUrl(tb)}" style="height:48px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">` : ''}</div>
           <input type="text" value="${escAttr(tb.isbn||'')}" data-f="isbn" placeholder="ISBN" style="width:100%;font-size:10px;">
+          <input type="text" value="${escAttr(tb.coverUrl||'')}" data-f="coverUrl" placeholder="Drive共有URL（全員に表示）" oninput="onCoverUrlInput(this)" style="width:100%;font-size:10px;margin-top:2px;">
           <button class="fetch-btn" onclick="fetchCoverForRow(this)">🔍取得</button>
         </div>
       </td>
@@ -1417,6 +1417,7 @@ function addTextbookRow() {
       <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
         <div class="cover-preview"></div>
         <input type="text" data-f="isbn" placeholder="ISBN" style="width:100%;font-size:10px;">
+        <input type="text" data-f="coverUrl" placeholder="Drive共有URL（全員に表示）" oninput="onCoverUrlInput(this)" style="width:100%;font-size:10px;margin-top:2px;">
         <button class="fetch-btn" onclick="fetchCoverForRow(this)">🔍取得</button>
       </div>
     </td>
