@@ -731,6 +731,8 @@ function migrateTextbookTypes(tbs) {
   const termMap = ['term1', 'term2', 'final'];
   const bySubj = {};
   for (const tb of tbs) {
+    // groups フィールドが欠損していた場合に補完（GAS・旧データ対応）
+    if (!Array.isArray(tb.groups)) tb.groups = [];
     if (tb.type === 'main') {
       (bySubj[tb.subject] = bySubj[tb.subject] || []).push(tb);
     }
@@ -1024,7 +1026,7 @@ function onGroupChange(groupId) {
   });
   // 対象グループのテキストをチェック
   for (const tb of textbooks) {
-    if (tb.groups.includes(groupId)) {
+    if (tb.groups && tb.groups.includes(groupId)) {
       const cb = document.getElementById('tb' + tb.id);
       if (cb) {
         cb.checked = true;
