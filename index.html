@@ -324,19 +324,19 @@ tr.drag-over { border-top: 2px solid var(--red); }
   .app-header { display: none; }
 
   /* A3横向き：余白を最小化してシート全体を収める */
-  @page { size: A3 landscape; margin: 6mm 8mm; }
+  @page { size: A3 landscape; margin: 5mm 7mm; }
 
   /* ロードマップ全体のレイアウト調整 */
   .roadmap-top {
     background: var(--dark-red) !important;
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    padding: 8px 16px;
+    padding: 5px 14px;
   }
-  .roadmap-student-name { font-size: 18px !important; margin-bottom: 3px; }
-  .roadmap-meta { font-size: 11px !important; gap: 10px; }
+  .roadmap-student-name { font-size: 15px !important; margin-bottom: 2px; }
+  .roadmap-meta { font-size: 10px !important; gap: 8px; }
 
   .roadmap-body {
-    padding: 6px 8px;
+    padding: 4px 6px;
     max-width: none !important;
     margin: 0 !important;
     overflow: visible !important;
@@ -348,45 +348,59 @@ tr.drag-over { border-top: 2px solid var(--red); }
     overflow: visible !important;
     page-break-inside: avoid;
     break-inside: avoid;
+    margin-bottom: 6px !important;
   }
   .roadmap-table {
     width: 100% !important;
     min-width: 0 !important;
     table-layout: fixed;
-    font-size: 10px;
+    font-size: 9px;
   }
   .roadmap-table thead th {
-    font-size: 10px;
-    padding: 5px 2px;
+    font-size: 9px;
+    padding: 3px 2px;
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
   .roadmap-table thead th.col-subject { width: 20px !important; }
-  .roadmap-table thead th.col-cat { min-width: 0 !important; width: 60px !important; }
+  .roadmap-table thead th.col-cat { min-width: 0 !important; width: 56px !important; }
   .roadmap-table thead th.col-month { min-width: 0 !important; }
+  .roadmap-table tbody td {
+    padding: 1px 2px !important;
+  }
   .subject-cell {
     font-size: 9px !important;
     width: 20px !important;
     max-width: 20px !important;
-    padding: 4px 2px !important;
+    padding: 2px 2px !important;
     letter-spacing: 1px !important;
     overflow: hidden !important;
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
   .cat-cell {
-    font-size: 9px !important;
-    padding: 2px 4px !important;
-    width: 58px !important;
-    max-width: 58px !important;
+    font-size: 8px !important;
+    padding: 1px 3px !important;
+    width: 56px !important;
+    max-width: 56px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
   }
-  .month-cell { padding: 3px 2px !important; }
+  .month-cell { padding: 2px 2px !important; }
   .tb-span {
     font-size: 9px !important;
-    padding: 2px 4px !important;
+    padding: 1px 3px !important;
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
+
+  /* 使用テキスト一覧（ブックギャラリー）の圧縮 */
+  .book-gallery-section { margin-bottom: 0 !important; box-shadow: none !important; border: 1px solid var(--gray-300); }
+  .book-gallery-header { padding: 4px 12px !important; font-size: 11px !important; }
+  .book-gallery { gap: 6px !important; padding: 6px 10px !important; }
+  .book-card { width: 56px !important; gap: 2px !important; }
+  .book-card-img, .book-card-placeholder { width: 44px !important; height: 62px !important; }
+  .book-card-placeholder { font-size: 18px !important; }
+  .book-card-label { font-size: 8px !important; line-height: 1.2 !important; max-width: 56px !important; }
+  .book-card-subj { font-size: 7px !important; padding: 0 3px !important; }
 
   .btn-roadmap-actions, .compress-info { display: none !important; }
 }
@@ -610,8 +624,8 @@ tr.drag-over { border-top: 2px solid var(--red); }
             <th style="width:24px"></th>
             <th style="width:8%">科目</th>
             <th style="width:8%">タイプ</th>
-            <th style="width:40px">順序</th>
-            <th style="width:60px">開始月</th>
+            <th style="width:60px">順序</th>
+            <th style="width:70px">開始月</th>
             <th style="min-width:160px">テキスト名</th>
             <th style="width:9%">略称</th>
             <th style="width:44px">標準(月)</th>
@@ -625,7 +639,7 @@ tr.drag-over { border-top: 2px solid var(--red); }
         <button class="btn-add-row" onclick="addTextbookRow()">＋ テキストを追加</button>
         <button class="btn-fetch-all" id="btn-fetch-all" onclick="fetchAllCovers()">🖼 全テキストの表紙を一括取得（Google Books）</button>
       </div>
-    </div>
+
       <div id="stab-connection" class="stab-content">
         <p class="hint-text">Google Apps Script のURLを設定すると、テキストマスター・グループ設定をスタッフ間でリアルタイムに共有できます。</p>
         <div style="margin-top:16px;">
