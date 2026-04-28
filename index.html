@@ -731,9 +731,15 @@ function migrateTextbookTypes(tbs) {
   const termMap = ['term1', 'term2', 'final'];
   const bySubj = {};
   for (const tb of tbs) {
-    // groups フィールドが欠損していた場合に補完（GAS・旧データ対応）
-    if (!Array.isArray(tb.groups)) tb.groups = [];
-    else tb.groups = tb.groups.map(Number);
+    // groups フィールドの正規化（GAS・旧データ対応）
+    // 配列でない場合（string "1,2,3,4" / null / undefined など）も数値配列に変換
+    if (Array.isArray(tb.groups)) {
+      tb.groups = tb.groups.map(v => parseInt(v)).filter(n => !isNaN(n));
+    } else if (typeof tb.groups === 'string' && tb.groups.trim()) {
+      tb.groups = tb.groups.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+    } else {
+      tb.groups = [];
+    }
     if (tb.type === 'main') {
       (bySubj[tb.subject] = bySubj[tb.subject] || []).push(tb);
     }
