@@ -733,6 +733,7 @@ function migrateTextbookTypes(tbs) {
   for (const tb of tbs) {
     // groups フィールドが欠損していた場合に補完（GAS・旧データ対応）
     if (!Array.isArray(tb.groups)) tb.groups = [];
+    else tb.groups = tb.groups.map(Number);
     if (tb.type === 'main') {
       (bySubj[tb.subject] = bySubj[tb.subject] || []).push(tb);
     }
@@ -775,7 +776,7 @@ async function loadDataFromGAS() {
   try {
     const res  = await fetch(url);
     const data = await res.json();
-    if (data.groups    && data.groups.length)    groups    = data.groups;
+    if (data.groups    && data.groups.length)    groups    = data.groups.map(g => ({...g, id: parseInt(g.id)}));
     if (data.textbooks && data.textbooks.length) textbooks = migrateTextbookTypes(data.textbooks);
   } catch(e) {
     console.warn('GAS読み込み失敗、ローカルデータを使用:', e);
